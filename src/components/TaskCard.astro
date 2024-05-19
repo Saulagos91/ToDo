@@ -1,11 +1,14 @@
 ---
 interface Props{
     task: string,
-    date: string,
+    getDate: string,
     id: number
 }
 
-const {task, date, id} = Astro.props;
+const {task, id} = Astro.props;
+let { getDate } = Astro.props;
+
+let date = getDate.split('T')[0];
 ---
 
         <!-- divs tasks -->

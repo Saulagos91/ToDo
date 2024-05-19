@@ -1,45 +1,115 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-if(Astro.request.method === 'POST'){
+if (Astro.request.method === "POST") {
     const data = await Astro.request.formData();
-    const complete_name = data.get('complete_name');
-    const username = data.get('username');
-    const pass = data.get('pass');
+    const complete_name = data.get("complete_name");
+    const username = data.get("username");
+    const pass = data.get("pass");
 
     const userData = {
-        'complete_name': complete_name,
-        'username': username,
-        'pass': pass
+        complete_name: complete_name,
+        username: username,
+        pass: pass,
+    };
+
+    const response = await fetch("http://localhost:3000/user", {
+        method: "POST",
+        body: JSON.stringify(userData),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+    if (response.ok) {
+        return Astro.redirect("/");
     }
 
-    const response = await fetch('http://localhost:3000/user', {
-            method: 'POST',
-            body: JSON.stringify(userData),
-            headers: {
-                'Content-Type': 'application/json'
-              }
-        });
-        
-
-        if(response.ok){
-            return Astro.redirect('/');
-        }
-
-        console.log('Error, no se pudo registrar el usuario');
-        
+    console.log("Error, no se pudo registrar el usuario");
 }
 ---
 
-<Layout title="Registrarse">
-
-    <section>
+<Layout title="Registrarse" displaySideBar={false}>
+    <section class="section">
+        <h1>Crear cuenta</h1>
         <form action="" class="form" method="POST">
-            <input type="text" name="complete_name" placeholder="Nombre completo" required>
-            <input type="text" name="username" placeholder="Nombre de usuario" required>
-            <input type="password" name="pass" placeholder="Contraseña" required>
-            <input type="submit">
+            <input
+                type="text"
+                name="complete_name"
+                placeholder="Nombre completo"
+                required
+            />
+            <input
+                type="text"
+                name="username"
+                placeholder="Nombre de usuario"
+                required
+            />
+            <input
+                type="password"
+                name="pass"
+                placeholder="Contraseña"
+                required
+            />
+            <input type="submit" class="sub"/>
         </form>
-    </section>
 
+        <div>
+            <p>
+                ¿Ya tienes cuenta? <a href="/login" class="log"
+                    >Inciar Sesión</a>
+            </p>
+        </div>
+    </section>
 </Layout>
+
+<style>
+    .section {
+        border: 1px solid #17396d;
+        padding: 1rem;
+        border-radius: 1rem;
+        box-shadow: 3px 8px 24px -2px rgba(0, 0, 0, 0.61);
+        -webkit-box-shadow: 3px 8px 24px -2px rgba(0, 0, 0, 0.61);
+        -moz-box-shadow: 3px 8px 24px -2px rgba(0, 0, 0, 0.61);
+        height: 20rem;
+        width: 22rem;
+        text-align: center;
+        margin: 3rem auto 3rem auto;
+    }
+
+    .form {
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    input {
+        height: 2rem;
+        border-radius: 5px;
+        border: 1px solid #33c3f0;
+    }
+
+    .log {
+        text-decoration: none;
+        color: #33c3f0;
+    }
+
+    .sub {
+        background-color: #33c3f0;
+        color: white;
+        font-weight: bold;
+        border: none;
+    }
+
+    .sub:hover {
+        cursor: pointer;
+        background-color: #17396d;
+    }
+
+    .log:hover {
+        cursor: pointer;
+        text-decoration: underline;
+        color: #17396d;
+    }
+</style>

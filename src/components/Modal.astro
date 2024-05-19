@@ -1,11 +1,73 @@
-<!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  
+---
+interface Props {
+    message: string;
+    success: string;
+}
+
+const { message } = Astro.props;
+const { success } = Astro.props;
+---
+
+<div class="modal animation">
+    <div class="modal-content">
+        <img src="" alt={`./img/${success}.png`} />
+        <p>{message}</p>
+    </div>
+    <button class="btn-close">Aceptar</button>
+    <div class="modal-buttons"></div>
+</div>
+
 <script>
-  Swal.fire({
-  position: "top-end",
-  icon: "success",
-  title: "Your work has been saved",
-  showConfirmButton: false,
-  timer: 1500
-});
-</script> -->
+
+    document.addEventListener('astro:page-load', ()=>{
+        const button = document.querySelector('.btn-close');
+        setTimeout(() => {
+            const modal = document.querySelector('.modal');
+            modal?.remove();
+        }, 2000);
+    });
+</script>
+
+<style>
+    .modal {
+        position: absolute;
+        /* background-color: rgb(0 0 0 /0.8); */
+        background-color: white;
+        border: 1px solid black;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        width: 30rem;
+    }
+
+    .modal-content {
+        font-size: 1.2rem;
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 2rem;
+        display: block;
+        max-width: 35rem;
+        max-height: 28rem;
+        height: auto;
+        padding: 1rem 1rem;
+        background-color: $white;
+        margin: 0 auto;
+        transform: translateY(-30rem);
+        transition-property: transform;
+        transition-duration: 600ms;
+        opacity: 0;
+        border-radius: 8px;
+    }
+
+    .modal-content p{
+        color: black;
+    }
+
+    .animation {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 1;
+    }
+</style>

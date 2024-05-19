@@ -2,23 +2,46 @@
 import Layout from '../layouts/Layout.astro';
 import Sidebar from '../components/Sidebar.astro';
 import Message from '../components/Message.astro';
+import TaskCard from '../components/TaskCard.astro';
 
-interface Props{
-    id: number,
-}
 
-const {id} = Astro.params;
+// const {id} = Astro.params;
 
-console.log(id);
+const id = Astro.request.url.substring(Astro.request.url.length -1);
+
+console.log(typeof(id));
+
+const response = await fetch(`http://localhost:3000/task/?userId=${id}`);
+const taskData = await response.json();
+
 ---
 
 
+<Layout title="Tareas" displaySideBar={true}>
 
-<Layout title="To do">
 
-    <!-- <Sidebar></Sidebar> -->
-	
+    <section class="section-tasks">
+
+        <div class="setcion-tasks-title">
+            <h1>Tareas por hacer</h1>
+        </div>
+
+        {
+            taskData.map((task:any) => {
+                return <TaskCard
+                task={task['task']}
+                getDate={task['date_to_do']}
+                id={task['id']}
+                 />
+            })
+        }
+   
+    </section>
+
+
+  
 </Layout>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', ()=> validateUser());
@@ -37,5 +60,16 @@ console.log(id);
         width: 100%;
         text-align: center;
         margin-top: 5rem;
+    }
+
+    .section-tasks{
+        display: flex;
+        flex-direction: column;
+        width: 70%;
+        margin: 0 auto;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        padding: 2rem 0;
     }
 </style>

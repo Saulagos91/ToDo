@@ -10,7 +10,7 @@ interface Props{
 const { id } = Astro.params;
 
 
-const response = await fetch('http://localhost:3000/task/?userId=3');
+const response = await fetch(`http://localhost:3000/task/?userId=3`);
 const taskData = await response.json();
 
 ---

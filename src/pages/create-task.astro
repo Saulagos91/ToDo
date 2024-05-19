@@ -1,10 +1,42 @@
 ---
+import { renderUniqueStylesheet } from "astro/runtime/server/index.js";
 import Layout from "../layouts/Layout.astro";
+import { ViewTransitions } from "astro:transitions";
+import Modal from "../components/Modal.astro";
+
+const id = Astro.request.url.substring(Astro.request.url.length -1);
+let showModal = false;
+
+if(Astro.request.method === 'POST'){
+    const data = await Astro.request.formData();
+    const task = data.get('task');
+    const date = data.get('date');
+    
+    const taskData = {
+        'task': task,
+        'date_to_do': date,
+        'user_id': id
+    }
+
+    const response = await fetch('http://localhost:3000/task', {
+            method: 'POST',
+            body: JSON.stringify(taskData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+        });
+
+    if(response.ok){
+        console.log('Se ha agregado la tarea correctamente');
+        showModal = true;
+    }
+}
 ---
 
-<Layout title="Crear un nueva tarea">
+<Layout title="Crear un nueva tarea" displaySideBar={true}>
+    <ViewTransitions />
     <section class="section-form">
-        <form action="" class="form">
+        <form action="" class="form" method="POST">
             <h1>Agregar una nueva tarea</h1>
             <div class="input-form-task">
                 <label for="">Ingrese los datos de la nueva tarea</label>
@@ -12,48 +44,24 @@ import Layout from "../layouts/Layout.astro";
             </div>
             <div class="input-form-task">
                 <label for="">Seleccione la fecha máxima para hacer la tarea</label>
-                <input type="datetime-local" name="date_to_do" id="" class="input-date-task input-task" required/>
+                <input type="datetime-local" name="date" id="" class="input-date-task input-task" required/>
             </div>
             <div class="input-form-task">
                 <input type="submit" class="btn-submit input-task" value="Agregar Tarea"/>
             </div>
         </form>
     </section>
-</Layout>
 
-
-<script>
-    document.addEventListener('DOMContentLoaded', ()=>{
-        getData();
-    });
-
-    function getData(){
-        const form = document.querySelector('.form');
-        form.addEventListener('submit', async(e)=>{
-            e.preventDefault();
-            const taskData = Object.fromEntries(new FormData(e.target));
-            const id = window.localStorage.getItem('id');
-            taskData.user_id = id;
-            addTask(taskData)
-            .then(data => console.log(data));
-        });
-    }
-
+{showModal &&(
+    <Modal
+    message="Se ha agregado la tarea"
+    success="check"
+    />
+)}    
 
     
-    async function addTask(taskData){
-        const response = await fetch('http://localhost:3000/task', {
-            method: 'POST',
-            body: JSON.stringify(taskData),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-        });
-        return await response.json();
-        
-    }
 
-</script>
+</Layout>
 
 
 

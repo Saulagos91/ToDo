@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-
 if (Astro.request.method === "POST") {
     try {
         const data = await Astro.request.formData();
@@ -10,50 +9,99 @@ if (Astro.request.method === "POST") {
 
         const userData = {
             username: name,
-            pass: password
+            pass: password,
+        };
+
+        const response = await fetch("http://localhost:3000/login", {
+            method: "POST",
+            body: JSON.stringify(userData),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        const responseData = await response.json();
+
+        if (responseData["id"]) {
+            console.log("Se ha iniciado sesion correctamente");
+            return Astro.redirect(`/?id=${responseData["id"]}`);
         }
-
-        const response = await fetch('http://localhost:3000/login', {
-                method: 'POST',
-                body: JSON.stringify(userData),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            const responseData = await response.json();
-
-            if(responseData['id']){
-                console.log('Se ha iniciado sesion correctamente');
-                return Astro.redirect('/');
-            }
-                console.log(responseData['message']);        
-                       
-        
+        console.log(responseData["message"]);
     } catch (error) {
         console.error(error);
     }
 }
 ---
 
-<Layout title="Iniciar Sesión">
-    <section>
-        <form class="form" method="POST">
+<Layout title="Iniciar Sesión" displaySideBar={false}>
+    <section class="section">
+        <h1>Iniciar Sesión</h1>
+        <form action="" class="form" method="POST">
             <input
                 type="text"
+                id="input-text-user"
+                placeholder="Ingrese el nombre de usuario"
                 name="username"
-                placeholder="Nombre de usuario"
-                required
             />
             <input
                 type="password"
+                id="input-text-pass"
+                placeholder="Ingrese la contraseña"
                 name="pass"
-                placeholder="Contraseña"
-                required
             />
-            <input type="submit" />
+            <input type="submit" class="sub" value="Iniciar Sesión" />
         </form>
+        <p>¿Aún no tienes cuenta?</p>
+        <a href="/sign-up" class="create-account">Crear Cuenta</a>
     </section>
-
 </Layout>
 
+<style>
+    .section {
+        border: 1px solid #17396d;
+        padding: 1rem;
+        border-radius: 1rem;
+        box-shadow: 3px 8px 24px -2px rgba(0, 0, 0, 0.61);
+        -webkit-box-shadow: 3px 8px 24px -2px rgba(0, 0, 0, 0.61);
+        -moz-box-shadow: 3px 8px 24px -2px rgba(0, 0, 0, 0.61);
+        height: 20rem;
+        width: 22rem;
+        text-align: center;
+        margin: 3rem auto 3rem auto;
+    }
+
+    .form {
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+
+   input {
+        height: 2rem;
+        border-radius: 5px;
+        border: 1px solid #33C3F0;
+    }
+
+    .sub {
+        background-color: #33c3f0;
+        color: white;
+        font-weight: bold;
+        border: none;
+    }
+
+    .sub:hover {
+        cursor: pointer;
+        background-color: #17396d;
+    }
+
+    .create-account {
+        text-decoration: none;
+        color: #33C3F0;
+        font-weight: 700;
+        border: 1px solid #33C3F0;
+        padding: .2rem 7rem;
+    }
+
+</style>

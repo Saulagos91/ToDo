@@ -1,22 +1,32 @@
 ---
-function showModal(){
 
+interface Props{
+    id: number
 }
+
+const id = Astro.request.url.substring(Astro.request.url.length -1);
+
 
 ---
 
 <aside class="side-bar">
 
     <div class="title-container">
-        <a href="/" class="title-link">
+        <a href={`/?id=${id}`} class="title-link">
         <h2 class="title-text">ToDo</h2>
     </a>
     </div>
 
     <nav class="sidebar-nav">
-        <a href="/tasks">Tareas Pendientes</a>
-        <a onclick="" href="/create-task">Crear nueva tarea</a>
-        <a href="/profile">Perfil</a>
+        <div class="navegation">
+            <a href={`/?id=${id}`}>Tareas Pendientes</a>
+            <a onclick="" href={`/create-task/?id=${id}`}>Crear nueva tarea</a>
+            <a href="/profile">Perfil</a>
+        </div>
+
+        <div class="option">
+            <a href="/login">Cerrar Sesión</a>
+        </div>
     </nav>
 </aside>
 
@@ -37,6 +47,9 @@ function showModal(){
 
     .sidebar-nav{
         margin-top: 5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 18rem;
     }
 
     .sidebar-nav a{

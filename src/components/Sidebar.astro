@@ -1,0 +1,60 @@
+---
+function showModal(){
+
+}
+
+---
+
+<aside class="side-bar">
+
+    <div class="title-container">
+        <a href="/" class="title-link">
+        <h2 class="title-text">ToDo</h2>
+    </a>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a href="/tasks">Tareas Pendientes</a>
+        <a onclick="" href="/create-task">Crear nueva tarea</a>
+        <a href="/profile">Perfil</a>
+    </nav>
+</aside>
+
+
+<style is:global>
+    .side-bar{
+        background-color: darkblue;
+        width: 20rem;
+        float: left;
+        height: 100%;
+        text-align: center;
+    }
+
+    .side-bar h2{
+        color: white;
+        font-size: 40px;
+    }
+
+    .sidebar-nav{
+        margin-top: 5rem;
+    }
+
+    .sidebar-nav a{
+        display: block;
+        color: white;
+        text-decoration: none;
+        margin-bottom: 1rem;
+        padding: .7rem;
+        transition-duration: 300ms;
+    }
+
+    .sidebar-nav a:hover{
+        background-color: blue;
+        border-radius: 5px;
+    }
+    
+    .title-link{
+        text-decoration: none;
+    }
+
+</style>

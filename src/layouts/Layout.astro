@@ -4,6 +4,7 @@ interface Props {
 }
 
 const { title } = Astro.props;
+import Sidebar from '../components/Sidebar.astro';
 ---
 
 <!doctype html>
@@ -16,6 +17,7 @@ const { title } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
+	<Sidebar></Sidebar>
 	<body>
 		<slot />
 	</body>
@@ -34,8 +36,10 @@ const { title } = Astro.props;
 	}
 	html {
 		font-family: system-ui, sans-serif;
-		background: #13151a;
+		background: #f3f4f6;
 		background-size: 224px;
+		height: 100%;
+
 	}
 	code {
 		font-family:
@@ -47,5 +51,9 @@ const { title } = Astro.props;
 			Bitstream Vera Sans Mono,
 			Courier New,
 			monospace;
+	}
+	body{
+		margin: 0;
+		height: 100%;
 	}
 </style>

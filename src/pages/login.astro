@@ -1,0 +1,59 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+
+if (Astro.request.method === "POST") {
+    try {
+        const data = await Astro.request.formData();
+        const name = data.get("username");
+        const password = data.get("pass");
+
+        const userData = {
+            username: name,
+            pass: password
+        }
+
+        const response = await fetch('http://localhost:3000/login', {
+                method: 'POST',
+                body: JSON.stringify(userData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const responseData = await response.json();
+
+            if(responseData['id']){
+                console.log('Se ha iniciado sesion correctamente');
+                return Astro.redirect('/');
+            }
+                console.log(responseData['message']);        
+                       
+        
+    } catch (error) {
+        console.error(error);
+    }
+}
+---
+
+<Layout title="Iniciar Sesión">
+    <section>
+        <form class="form" method="POST">
+            <input
+                type="text"
+                name="username"
+                placeholder="Nombre de usuario"
+                required
+            />
+            <input
+                type="password"
+                name="pass"
+                placeholder="Contraseña"
+                required
+            />
+            <input type="submit" />
+        </form>
+    </section>
+
+</Layout>
+

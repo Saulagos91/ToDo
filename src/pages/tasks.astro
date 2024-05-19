@@ -1,0 +1,55 @@
+---
+import Layout from "../layouts/Layout.astro";
+import TaskCard from "../components/TaskCard.astro";
+// const  tasksPending = await fetch();
+
+interface Props{
+    id: number
+}
+
+const { id } = Astro.params;
+
+
+const response = await fetch('http://localhost:3000/task/?userId=3');
+const taskData = await response.json();
+
+---
+
+<Layout title="Tareas">
+
+
+    <section class="section-tasks">
+
+        <div class="setcion-tasks-title">
+            <h1>Tareas por hacer</h1>
+        </div>
+
+        {
+            taskData.map((task:any) => {
+                return <TaskCard
+                task={task['task']}
+                date={task['date_to_do']}
+                id={task['id']}
+                 />
+            })
+        }
+   
+    </section>
+
+
+  
+</Layout>
+
+
+<style>
+    .section-tasks{
+        display: flex;
+        flex-direction: column;
+        width: 70%;
+        margin: 0 auto;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        padding: 2rem 0;
+    }
+</style>

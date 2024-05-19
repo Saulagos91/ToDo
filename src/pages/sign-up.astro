@@ -1,0 +1,45 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+if(Astro.request.method === 'POST'){
+    const data = await Astro.request.formData();
+    const complete_name = data.get('complete_name');
+    const username = data.get('username');
+    const pass = data.get('pass');
+
+    const userData = {
+        'complete_name': complete_name,
+        'username': username,
+        'pass': pass
+    }
+
+    const response = await fetch('http://localhost:3000/user', {
+            method: 'POST',
+            body: JSON.stringify(userData),
+            headers: {
+                'Content-Type': 'application/json'
+              }
+        });
+        
+
+        if(response.ok){
+            return Astro.redirect('/');
+        }
+
+        console.log('Error, no se pudo registrar el usuario');
+        
+}
+---
+
+<Layout title="Registrarse">
+
+    <section>
+        <form action="" class="form" method="POST">
+            <input type="text" name="complete_name" placeholder="Nombre completo" required>
+            <input type="text" name="username" placeholder="Nombre de usuario" required>
+            <input type="password" name="pass" placeholder="Contraseña" required>
+            <input type="submit">
+        </form>
+    </section>
+
+</Layout>

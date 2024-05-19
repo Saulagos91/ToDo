@@ -1,0 +1,28 @@
+
+<div class="succes">
+    <p>Registrado correctamente</p>
+</div>
+
+<script>
+    setTimeout(() => {
+        
+        const messageContainer = document.querySelector('.succes');
+        messageContainer?.remove();
+    }, 2000);
+    
+</script>
+
+<style>
+    .succes{
+        width: 30%;
+        height: 2rem;
+        margin: auto;
+        text-align: center;
+        background-color: rgb(97, 230, 97);
+        border-left: 5px solid rgb(14, 141, 14);
+    }
+
+    .succes p{
+        color: rgb(14, 141, 14);
+    }
+</style>

@@ -1,0 +1,99 @@
+---
+interface Props{
+    task: string,
+    date: string,
+    id: number
+}
+
+const {task, date, id} = Astro.props;
+---
+
+        <!-- divs tasks -->
+        <div class="task-container">
+            <div class="task-details">
+                <p>{task}</p>
+                <p>{date}</p>
+            </div>
+            <div class="tasks-actions">
+                <button class="btn-edit" value={id}>Editar</button>
+                <button class="btn-complete" value={id}>Completar</button>
+            </div>
+        </div>
+
+
+        <!-- fin de las tasks -->
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', ()=>{
+            const buttons = document.querySelectorAll('.btn-complete');
+
+            buttons.forEach(button =>{
+               // console.log(button.value);  //Funciona
+               button.addEventListener('click', ()=>{
+                    completeTask(button.value);
+               });
+            });
+        });
+
+
+        async function completeTask(id:number){
+            const response = await fetch(`http://localhost:3000/task/?id=${id}`, {
+                method: 'PUT'
+            });
+            if(response.ok){
+                alert('Tarea completada correctamente');
+                window.location.reload();
+            }
+        }
+        
+       
+    </script>
+
+
+
+<style is:global>
+
+    .task-container{
+        border: 1px solid lightblue;/*borrar luego */
+        width: 40rem;
+        min-height: 6rem;
+        padding: 0 1rem;
+        display: flex;
+        justify-content: space-between;
+        background-color: #EEEFEF;
+        border-radius: 5px;
+    }
+
+    .tasks-actions{
+        margin-top: 3.8rem;
+    }
+
+    .btn-edit{
+        background-color: rgb(60, 184, 7);
+        border-radius: 8px;
+        width: 6rem;
+        border: 1px solid lightgoldenrodyellow;
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .btn-edit:hover{
+        background-color: green;
+    }
+
+    .btn-complete{
+        border-radius: 8px;
+        width: 6rem;
+        background-color: rgb(50, 134, 203);
+        color: white;
+        font-weight: 700;
+        border: 1px solid white;
+        cursor: pointer;
+    }
+
+    .btn-complete:hover{
+        background-color: blue
+    }
+</style>
